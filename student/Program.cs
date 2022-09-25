@@ -1,3 +1,7 @@
+using System.Reflection;
+using MediatR;
+using student;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
 
 var app = builder.Build();
 
@@ -21,5 +27,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
