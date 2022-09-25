@@ -1,2 +1,2 @@
-# event-drive-demo
+# Event Drive Architecture
 Event Driven architecture on Azure
