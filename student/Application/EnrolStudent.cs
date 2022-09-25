@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace student
 {
-public class EnrolStudent
+public class EnrolStudent : IRequest<Student>
 { 
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;

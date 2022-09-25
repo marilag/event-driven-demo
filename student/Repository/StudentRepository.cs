@@ -6,39 +6,41 @@ namespace student
     public class StudentRepository : IEnumerable<Student>, IStudentRepository
     {
         public IOptions<StudentOptions> Options { get; }
-        
+        public List<Student> StudentList; 
+
         public StudentRepository(IOptions<StudentOptions> options)
         {
             Options = options;
+            StudentList = new List<Student>();
         }
 
         
 
-        public async Task<IList<Student>> Get()
+        public async Task<IEnumerable<Student>> Get()
         {
-            return this.ToList();
+            return StudentList;
         }
 
-        public async Task<Student> Get(string studentId)
+        public async Task<Student?> Get(string studentId)
         {
-            return this.Where(s => string.Equals(s.StudentId.ToString(),studentId,
+            return StudentList.Where(s => string.Equals(s.StudentId.ToString(),studentId,
             StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
         }
 
         public async Task<Student> Save(Student student)
         {
-            this.Append(student);
+            StudentList.Add(student);
             return student;
         }
 
         public IEnumerator<Student> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return StudentList.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

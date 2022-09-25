@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace student
 {
-    public class EnrolStudentHandler
+    public class EnrolStudentHandler : IRequestHandler<EnrolStudent,Student>
     {
         public EnrolStudentHandler(IStudentRepository repo)
         {
@@ -18,7 +20,7 @@ namespace student
                 request.Email,
                 request.Program
             );
-            
+
             await Repo.Save(newStudent);
 
             return newStudent;
