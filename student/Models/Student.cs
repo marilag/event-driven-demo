@@ -1,4 +1,3 @@
-namespace student;
 
 public  class Student
 {
