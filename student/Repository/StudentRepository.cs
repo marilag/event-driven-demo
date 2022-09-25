@@ -1,8 +1,9 @@
+using System.Collections;
 using Microsoft.Extensions.Options;
 
 namespace student
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentRepository : IEnumerable<Student>, IStudentRepository
     {
         public IOptions<StudentOptions> Options { get; }
         
@@ -13,17 +14,29 @@ namespace student
 
         
 
-        public Task<IList<Student>> Get()
+        public async Task<IList<Student>> Get()
+        {
+            return this.ToList();
+        }
+
+        public async Task<Student> Get(string studentId)
+        {
+            return this.Where(s => string.Equals(s.StudentId.ToString(),studentId,
+            StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+        }
+
+        public async Task<Student> Save(Student student)
+        {
+            this.Append(student);
+            return student;
+        }
+
+        public IEnumerator<Student> GetEnumerator()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Student> Get(string studentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Student> Save(Student student)
+        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }
