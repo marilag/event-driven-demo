@@ -1,2 +1,2 @@
-# Event Drive Architecture
+# Event Driven Architecture
 Event Driven architecture on Azure
