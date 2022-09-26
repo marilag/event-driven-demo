@@ -4,8 +4,8 @@ namespace eventschool
     {
         public const string EventGrid = "EventGrid";
 
-        public string TopicEndpoint { get; set; }
-        public string EventGridKey { get; set; }    
+        public string TopicEndpoint { get; set; } = string.Empty;
+        public string EventGridKey { get; set; } = string.Empty;
 
     }
 }
