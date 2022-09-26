@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace student.Controllers;
+namespace eventschool;
 
 [ApiController]
 [Route("api/students")]

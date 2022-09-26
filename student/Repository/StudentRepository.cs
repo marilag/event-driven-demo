@@ -1,7 +1,7 @@
 using System.Collections;
 using Microsoft.Extensions.Options;
 
-namespace student
+namespace eventschool
 {
     public class StudentRepository : IEnumerable<Student>, IStudentRepository
     {

@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace student {
+namespace eventschool {
 
     public interface IStudentRepository
 	{

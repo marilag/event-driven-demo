@@ -1,6 +1,7 @@
 using System.Reflection;
+using Azure.Identity;
+using eventschool;
 using MediatR;
-using student;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,20 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+if (builder.Environment.IsProduction())
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
+}
+ 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
+builder.Services.AddSingleton<IEventGridService, EventGridService>();
+
+builder.Services.Configure<EventGridOptions>(
+    builder.Configuration.GetSection(EventGridOptions.EventGrid));
 
 var app = builder.Build();
 

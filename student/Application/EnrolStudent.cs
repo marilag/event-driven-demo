@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace student
+namespace eventschool
 {
 public class EnrolStudent : IRequest<Student>
 { 

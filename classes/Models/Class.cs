@@ -7,7 +7,6 @@ namespace eventschool {
         public string ClassName { get; set; } = String.Empty;
         public string Program { get; set; } = String.Empty;
         public string Term { get; set; } = String.Empty;
-
    
         public int MaxStudents { get; set; } 
 
@@ -33,8 +32,7 @@ namespace eventschool {
         }
 
          public void RemoveStudent(string id)
-        {
-            
+        {            
             _enroledStudents.Remove(id);
         }
 

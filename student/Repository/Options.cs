@@ -1,4 +1,4 @@
-namespace student
+namespace eventschool
 {
     public class StudentOptions
     {

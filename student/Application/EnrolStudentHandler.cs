@@ -1,12 +1,15 @@
 using MediatR;
 
-namespace student
+namespace eventschool
 {
     public class EnrolStudentHandler : IRequestHandler<EnrolStudent,Student>
     {
-        public EnrolStudentHandler(IStudentRepository repo)
+        private readonly IMediator _mediator;
+
+        public EnrolStudentHandler(IStudentRepository repo, IMediator mediator)
         {
             Repo = repo;
+            this._mediator = mediator;
         }
 
         public IStudentRepository Repo { get; }
@@ -23,6 +26,8 @@ namespace student
 
             await Repo.Save(newStudent);
 
+            await _mediator.Publish<StudentRegistered>(new StudentRegistered(){StudentId = newStudent.StudentId.ToString(), Program = newStudent.Program});
+            
             return newStudent;
         }
     }
