@@ -2,6 +2,7 @@ using System.Reflection;
 using Azure.Identity;
 using eventschool;
 using MediatR;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,14 +17,22 @@ builder.Services.AddSingleton<IClassesRepository,ClassesRepository>();
 builder.Services.AddSingleton<IEventGridService, EventGridService>();
 builder.Services.Configure<EventGridOptions>(
     builder.Configuration.GetSection(EventGridOptions.EventGrid));
-    
+
+builder.Services.AddAzureClients(b => 
+    b.AddServiceBusClient(builder.Configuration.GetValue<string>("ServiceBus:TopicEndpoint")));
+
+builder.Services.Configure<ServiceBusOptions>(
+    builder.Configuration.GetSection(ServiceBusOptions.ServiceBus));
+
+ builder.Services.AddHostedService<ServiceBusWorker>();
+
 if (builder.Environment.IsProduction())
 {
     builder.Configuration.AddAzureKeyVault(
         new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
         new DefaultAzureCredential());
 }
- 
+
 
 var app = builder.Build();
 

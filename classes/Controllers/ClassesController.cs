@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +13,17 @@ public class ClassesController : ControllerBase
     private readonly ILogger<ClassesController> _logger;
     private readonly IMediator _mediator;
     private readonly IClassesRepository _classesRepo;
+    private readonly ServiceBusClient _sbClient;
 
-    public ClassesController(ILogger<ClassesController> logger, IMediator mediator, IClassesRepository classesRepo)
+    public ClassesController(ILogger<ClassesController> logger, 
+    IMediator mediator, 
+    IClassesRepository classesRepo,
+    ServiceBusClient sbClient)
     {
         _logger = logger;
         _mediator = mediator;
         _classesRepo = classesRepo;
+        _sbClient = sbClient;
     }
 
     [HttpPost]

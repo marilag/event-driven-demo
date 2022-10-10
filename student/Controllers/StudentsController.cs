@@ -21,7 +21,7 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Student>> PostStudent(EnrolStudent enrolStudent)
+    public async Task<ActionResult<Student>> PostStudent(RegisterStudent enrolStudent)
     {
         var result = await _mediator.Send<Student>(enrolStudent);
         return CreatedAtAction(nameof(GetStudents), new { id = enrolStudent }, result);
