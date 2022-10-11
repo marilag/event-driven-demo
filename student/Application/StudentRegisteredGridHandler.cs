@@ -3,12 +3,12 @@ using MediatR;
 
 namespace  eventschool
 {
-    public class StudentRegisteredHandler : INotificationHandler<StudentRegistered>
+    public class StudentRegisteredGridHandler : INotificationHandler<StudentRegistered>
 
     {
         private readonly IEventGridService _eventGridService;
 
-        public StudentRegisteredHandler(IEventGridService eventGridService)
+        public StudentRegisteredGridHandler(IEventGridService eventGridService)
         {
             _eventGridService = eventGridService;
         }

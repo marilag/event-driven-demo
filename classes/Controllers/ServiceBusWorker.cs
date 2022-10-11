@@ -1,5 +1,8 @@
 using Azure.Messaging.ServiceBus;
+using MediatR;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace eventschool
 {
@@ -7,6 +10,7 @@ namespace eventschool
     public class ServiceBusWorker : IHostedService, IDisposable
     {
         private readonly ServiceBusClient _sbClient;
+        private readonly IMediator _mediator;
         private readonly ServiceBusOptions _options;
         private readonly ILogger<ServiceBusWorker> _logger;
 
@@ -14,16 +18,17 @@ namespace eventschool
 
         public ServiceBusWorker(ServiceBusClient sbClient,
             IOptions<ServiceBusOptions> options,
+            IMediator mediator,
             ILogger<ServiceBusWorker> logger)
         {
             this._sbClient = sbClient;
+            this._mediator = mediator;
             this._options = options.Value;
             this._logger = logger;
         }
         public void Dispose()
         {
             GC.SuppressFinalize(this);    
-            
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -50,18 +55,22 @@ namespace eventschool
 
         private async Task ProcessErrorMessagesAsync(ProcessErrorEventArgs args)
         {
+
             _logger.LogDebug($"Error message {args.Exception.Message}");
 
         }
 
         private async Task ProcessMessagesAsync(ProcessMessageEventArgs args)
         {
-            _logger.LogInformation($"Received message");
-
-            var myPayload = args.Message.Body.ToString();
-
-             _logger.LogInformation($"Received message {myPayload}");
-
+             _logger.LogInformation($"EVENT RECIEVED: {args.Message.Body.ToString()}");
+        
+            var notification = JsonConvert.DeserializeObject<EventGridSchema<StudentRegisteredNotification>>(args.Message.Body.ToString());
+            
+            await _mediator.Publish(
+                new StudentRegisteredNotification {
+                    Program = notification.Data.Program,
+                    StudentId   = notification.Data.StudentId});
+            
             await args.CompleteMessageAsync(args.Message).ConfigureAwait(false);
         }
 

@@ -28,7 +28,8 @@ namespace eventschool
 
             await _mediator.Publish<StudentRegistered>(new StudentRegistered(){
                 StudentId = newStudent.StudentId.ToString(), 
-                Program = newStudent.Program});
+                Program = newStudent.Program,
+                Data = newStudent});
             
             return newStudent;
         }

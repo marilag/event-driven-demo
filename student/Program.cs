@@ -21,6 +21,8 @@ if (builder.Environment.IsProduction())
  
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
+builder.Services.AddSingleton(typeof(IEventStoreRepository<>),typeof(EventStoreRepository<>));
+
 builder.Services.AddSingleton<IEventGridService, EventGridService>();
 
 builder.Services.Configure<EventGridOptions>(

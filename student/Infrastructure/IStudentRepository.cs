@@ -8,7 +8,5 @@ namespace eventschool {
 		public  Task<IEnumerable<Student>> Get();
 		public  Task<Student> Get(string studentId);
 
-
-
 	} 
 }

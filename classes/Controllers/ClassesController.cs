@@ -28,10 +28,10 @@ public class ClassesController : ControllerBase
 
     [HttpPost]
     [Route("{classid}/students")]
-    public async Task<Class> EnrolStudent(string classid, [FromBody] string studentid)
+    public async Task<IActionResult> EnrolStudent(string classid, [FromBody] string studentid)
     {
-        var result = await _mediator.Send<Class>(new EnrolToClass() {ClassId = classid, StudentId = studentid});
-        return result;
+        var result = await _mediator.Send(new EnrolToClass() {ProgramId = classid, StudentId = studentid});
+        return new AcceptedResult();
     } 
 
     [HttpGet]
