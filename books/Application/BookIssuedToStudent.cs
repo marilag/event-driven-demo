@@ -2,12 +2,9 @@ using MediatR;
 
 namespace eventschool
 {
-    public class IssueToStudent : IRequest<Book>
+    public class BookIssuedToStudent : INotification
     {
-
-        public string BookId { get; set; } = string.Empty;
         public string StudentId { get; set; } = string.Empty;
-
-
+        public string BookCode { get; set; } = string.Empty;
     }
 }

@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +13,25 @@ public class ClassesController : ControllerBase
     private readonly ILogger<ClassesController> _logger;
     private readonly IMediator _mediator;
     private readonly IClassesRepository _classesRepo;
+    private readonly ServiceBusClient _sbClient;
 
-    public ClassesController(ILogger<ClassesController> logger, IMediator mediator, IClassesRepository classesRepo)
+    public ClassesController(ILogger<ClassesController> logger, 
+    IMediator mediator, 
+    IClassesRepository classesRepo,
+    ServiceBusClient sbClient)
     {
         _logger = logger;
         _mediator = mediator;
         _classesRepo = classesRepo;
+        _sbClient = sbClient;
     }
 
     [HttpPost]
     [Route("{classid}/students")]
-    public async Task<Class> EnrolStudent(string classid, [FromBody] string studentid)
+    public async Task<IActionResult> EnrolStudent(string classid, [FromBody] string studentid)
     {
-        var result = await _mediator.Send<Class>(new EnrolToClass() {ClassId = classid, StudentId = studentid});
-        return result;
+        var result = await _mediator.Send(new EnrolToClass() {ProgramId = classid, StudentId = studentid});
+        return new AcceptedResult();
     } 
 
     [HttpGet]

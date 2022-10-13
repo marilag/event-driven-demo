@@ -2,24 +2,31 @@ using MediatR;
 
 namespace eventschool
 {
-    public class EnrolToClassHandler : IRequestHandler<EnrolToClass,Class>
+    public class EnrolToClassHandler : IRequestHandler<EnrolToClass>
     {
         private readonly IClassesRepository classrepo;
+        private readonly IMediator _mediator;
 
-        public EnrolToClassHandler(IClassesRepository classrepo)
+        public EnrolToClassHandler(IClassesRepository classrepo, IMediator mediator)
         {
             this.classrepo = classrepo;
+            _mediator = mediator;
         }
-        public async Task<Class> Handle(EnrolToClass request, CancellationToken token)
+        public async Task<Unit> Handle(EnrolToClass request, CancellationToken token)
         {
-            var _class = await classrepo.Get(request.ClassId) ??
+            var _classes = await classrepo.Get() ??
                 throw new Exception("Class not found");
 
-            _class.AddStudent(request.StudentId);
+        foreach (var c in _classes.ToList())
+        {
+            c.AddStudent(request.StudentId);
 
-            await classrepo.Save(_class);
+            await classrepo.Save(c);
 
-            return _class;
+            await _mediator.Publish<ClassEnroled>(new ClassEnroled() {ClassCode = c.ClassCode, StudentId = request.StudentId});    
+
+        }
+        return new Unit();
 
         }
         

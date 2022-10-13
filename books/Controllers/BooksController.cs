@@ -25,7 +25,7 @@ public class BooksController : ControllerBase
     [Route("{bookid}/issued")]
     public async Task<Book> IssueToStudent(string bookid, [FromBody] string studentid)
     {
-        var result = await _mediator.Send<Book>(new IssueToStudent() {BookId = bookid, StudentId = studentid});
+        var result = await _mediator.Send<Book>(new IssueBookToStudent() {BookId = bookid, StudentId = studentid});
         return result;
     } 
 

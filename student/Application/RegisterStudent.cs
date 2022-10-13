@@ -1,8 +1,8 @@
 using MediatR;
 
-namespace student
+namespace eventschool
 {
-public class EnrolStudent : IRequest<Student>
+public class RegisterStudent : IRequest<Student>
 { 
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
