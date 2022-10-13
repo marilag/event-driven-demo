@@ -4,7 +4,15 @@ namespace eventschool
 {
     public class StudentRegistered : DomainEvent<Student>, INotification
     {
+        private const string _schemaVersion = "1.0";
         public string StudentId { get; set; } = String.Empty;
         public string Program { get; set; } = String.Empty;
+
+        public StudentRegistered()
+        {
+            EventType = nameof(StudentRegistered);
+            SchemaVersion = _schemaVersion;
+        
+        }
     }
 }
