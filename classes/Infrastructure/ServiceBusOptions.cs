@@ -5,5 +5,8 @@ namespace eventschool
 
         public string TopicPath { get; set; } = string.Empty;
         public string SubscriptionName { get; set; } = string.Empty;
+
+        public string DeadLetterSubscriptionName { get; set; } = string.Empty;
+
     }
 }

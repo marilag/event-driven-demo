@@ -34,6 +34,8 @@ public class ClassesController : ControllerBase
         return new AcceptedResult();
     } 
 
+  
+
     [HttpGet]
     public async Task<IEnumerable<Class>> GetClasses()
     {
@@ -46,6 +48,16 @@ public class ClassesController : ControllerBase
     {
         return (await _classesRepo.Get(id));
     } 
+
+    
+    [HttpPut]
+    [Route("/classsize")]
+    public async Task<IActionResult> IncreaseClassSize()
+    {
+        var result = await _mediator.Send(new IncreaseClassSize());
+        return new AcceptedResult();
+    } 
+
 
     
 }
