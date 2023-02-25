@@ -2,13 +2,13 @@ using MediatR;
 
 namespace eventschool
 {
-public class RegisterStudent : IRequest<Student>
+public record RegisterStudent : IRequest<Student>
 { 
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Address { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Program { get; set; } = string.Empty;
+    public string FirstName { get; init; } = default!;
+    public string LastName { get; init; } = default!;
+    public string Address { get; init; } = default!;
+    public string Email { get; init; } = default!;
+    public string Program { get; init; } = default!;
 
 }
 }

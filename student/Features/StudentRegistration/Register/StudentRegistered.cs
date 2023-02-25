@@ -12,7 +12,6 @@ namespace eventschool
         {
             EventType = nameof(StudentRegistered);
             SchemaVersion = _schemaVersion;
-        
         }
     }
 }

@@ -24,8 +24,7 @@ namespace eventschool
                 Email = request.Email,
                 Program = request.Program
             };
-              
-            await Repo.Save(newStudent);
+            
 
             await _mediator.Publish<StudentRegistered>(new StudentRegistered(){
                 StudentId = newStudent.StudentId.ToString(), 
