@@ -1,6 +1,7 @@
 using System.Transactions;
 using Azure.Messaging.EventGrid;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace  eventschool
 {
@@ -8,11 +9,11 @@ namespace  eventschool
 
     {
         private readonly IEventStoreRepository<DomainEvent<Student>> _eventstoreRepo;
-        private readonly IOutboxRepository<DomainEvent<Student>> _outboxRepo;
+        private readonly IOutboxRepository _outboxRepo;
 
         public StudentRegisteredStoreHandler(
             IEventStoreRepository<DomainEvent<Student>> eventstoreRepo,
-            IOutboxRepository<DomainEvent<Student>> outboxRepo)
+            IOutboxRepository outboxRepo)
         {
             this._eventstoreRepo = eventstoreRepo;
             this._outboxRepo = outboxRepo;
@@ -23,8 +24,10 @@ namespace  eventschool
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    await _eventstoreRepo.Append(notification);
-                    await _outboxRepo.Insert(notification);
+                    await _eventstoreRepo.Append(notification);                    
+                    var outboxNotification = new OutboxNotification();
+                    outboxNotification.Data = JsonConvert.SerializeObject(notification);
+                    await _outboxRepo.Insert(outboxNotification);
                     scope.Complete();
                 }                
             }

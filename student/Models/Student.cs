@@ -1,5 +1,7 @@
 
-public record Student
+using eventschool;
+
+public record Student 
 {
     public Guid StudentId { get; init; } = default!;
     public string FirstName { get; init;} = default!;
