@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 namespace  eventschool
 {
     public class OutboxNotificationHandler :  INotificationHandler<OutboxNotification> 
-        
 
     {
         private readonly IEventGridService _eventGridService;

@@ -15,10 +15,8 @@ namespace eventschool
 
         public async Task Process(OutboxNotification eventData) => 
             OutboxStore.Find(f => f.Equals(eventData)).IsProcessed = true;
-        public Task EvictProcessed() 
-        {
-            throw new NotImplementedException();
-        }
+        public Task EvictProcessed() =>
+            throw new NotImplementedException();        
 
         public async Task<IEnumerable<OutboxNotification>> Get() =>  OutboxStore;
     
