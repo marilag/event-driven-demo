@@ -24,18 +24,22 @@ namespace  eventschool
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
-                    await _eventstoreRepo.Append(notification);                    
+                    _eventstoreRepo.Append(notification); 
+
                     var outboxNotification = new OutboxNotification();
+
                     outboxNotification.Data = JsonConvert.SerializeObject(notification);
-                    await _outboxRepo.Insert(outboxNotification);
+
+                    _outboxRepo.Insert(outboxNotification);
+
                     scope.Complete();
+
                 }                
             }
             catch (TransactionAbortedException tex)
             {
                 throw tex;
             }
-            
         }
     }
 
