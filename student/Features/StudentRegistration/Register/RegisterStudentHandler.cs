@@ -16,15 +16,15 @@ namespace eventschool
 
         public async Task<Student> Handle(RegisterStudent request, CancellationToken cancellationToken)
         {            
-            var newStudent = new Student(
-                request.FirstName,
-                request.LastName,
-                request.Address,
-                request.Email,
-                request.Program
-            );
-
-            await Repo.Save(newStudent);
+            Student newStudent = new() 
+            {
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Address = request.Address,
+                Email = request.Email,
+                Program = request.Program
+            };
+            
 
             await _mediator.Publish<StudentRegistered>(new StudentRegistered(){
                 StudentId = newStudent.StudentId.ToString(), 

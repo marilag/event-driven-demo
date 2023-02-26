@@ -15,6 +15,7 @@ namespace eventschool
         private readonly ILogger<ServiceBusWorker> _logger;
 
         private  ServiceBusProcessor _processor;
+        private  ServiceBusProcessor _processorDeadLetter;
 
         public ServiceBusWorker(ServiceBusClient sbClient,
             IOptions<ServiceBusOptions> options,
@@ -46,12 +47,14 @@ namespace eventschool
 
             _processor.ProcessMessageAsync +=  ProcessMessagesAsync;  
 
-            _processor.ProcessErrorAsync +=  ProcessErrorMessagesAsync;        
-      
+            _processor.ProcessErrorAsync +=  ProcessErrorMessagesAsync;     
+
 
             await _processor.StartProcessingAsync().ConfigureAwait(false);    
             
         }
+
+       
 
         private async Task ProcessErrorMessagesAsync(ProcessErrorEventArgs args)
         {
@@ -66,10 +69,20 @@ namespace eventschool
         
             var notification = JsonConvert.DeserializeObject<EventGridSchema<StudentRegisteredNotification>>(args.Message.Body.ToString());
             
-            await _mediator.Publish(
+            try
+            {
+                await _mediator.Publish(
                 new StudentRegisteredNotification {
                     Program = notification.Data.Program,
                     StudentId   = notification.Data.StudentId});
+                
+            }
+            catch (System.Exception ex)
+            {
+                
+                await args.DeadLetterMessageAsync(args.Message ,ex.Message);
+            }
+
             
             await args.CompleteMessageAsync(args.Message).ConfigureAwait(false);
         }

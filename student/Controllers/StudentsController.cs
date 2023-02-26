@@ -12,12 +12,12 @@ public class StudentsController : ControllerBase
     private readonly ILogger<StudentsController> _logger;
     private readonly IMediator _mediator;
     private readonly IStudentRepository _studentRepo;
-    private readonly IEventStoreRepository<StudentRegistered> _eventRepo;
+    private readonly IEventStoreRepository<DomainEvent<Student>> _eventRepo;
 
     public StudentsController(ILogger<StudentsController> logger, 
     IMediator mediator, 
     IStudentRepository studentRepo,
-    IEventStoreRepository<StudentRegistered> eventRepo)
+    IEventStoreRepository<DomainEvent<Student>> eventRepo)
     {
         _logger = logger;
         _mediator = mediator;
@@ -47,7 +47,7 @@ public class StudentsController : ControllerBase
 
      [HttpGet]
     [Route("/student-events")]
-    public async Task<ActionResult<List<StudentRegistered>>> GetStudentEvents()
+    public async Task<ActionResult<List<DomainEvent<Student>>>> GetStudentEvents()
     {
         return (await _eventRepo.Get()).ToList();
     } 
