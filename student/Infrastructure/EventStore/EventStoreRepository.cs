@@ -8,10 +8,20 @@ namespace eventschool
 
         public EventStoreRepository() => EventStore = new List<T>();
 
-        public async Task Append(T eventData) => EventStore.Add(eventData);
+        public void Append(T eventData) => EventStore.Add(eventData);
 
-        public async Task<IEnumerable<T>> Get() =>  EventStore;
-    
+        public IEnumerable<T> GetStream() =>  EventStore;
+
+        public Task AppendAsync(T eventData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<T>> GetStreamAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public  IEnumerator<T> GetEnumerator() => EventStore.GetEnumerator();
     
         IEnumerator IEnumerable.GetEnumerator() =>  EventStore.GetEnumerator();

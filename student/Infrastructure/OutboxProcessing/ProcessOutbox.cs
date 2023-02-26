@@ -19,12 +19,12 @@ public class ProcessOutbox : Quartz.IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var notifcations = await outbox.GetUnprocessed();
+        var notifcations = outbox.GetUnprocessed();
         
         foreach (var n in notifcations)
         {
             await _mediator.Publish(n);     
-            await outbox.Process(n);  
+            outbox.Process(n);  
         }
               
         return;

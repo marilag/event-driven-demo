@@ -35,7 +35,8 @@ public class StudentsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
     {
-        return (await _studentRepo.Get()).ToList();
+        return await _mediator.Send<List<Student>>(new GetResgistrations());
+        
     } 
 
     [HttpGet]
@@ -47,9 +48,9 @@ public class StudentsController : ControllerBase
 
      [HttpGet]
     [Route("/student-events")]
-    public async Task<ActionResult<List<DomainEvent<Student>>>> GetStudentEvents()
+    public ActionResult<List<DomainEvent<Student>>> GetStudentEvents()
     {
-        return (await _eventRepo.Get()).ToList();
+        return _eventRepo.GetStream().ToList();
     } 
 
     
