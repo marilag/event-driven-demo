@@ -18,7 +18,7 @@ namespace  eventschool
         {
             var eventData = JsonConvert.DeserializeObject<DomainEvent<Student>>(notification.Data);
             await _eventGridService.Publish(new List<EventGridEvent> {
-                new EventGridEvent(nameof(eventData.EventType),nameof(eventData.EventType),"1.0",eventData)                
+                new EventGridEvent(eventData.EventType,eventData.EventType,"1.0",eventData)                
             });       
         }
     }
