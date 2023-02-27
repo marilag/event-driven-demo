@@ -2,7 +2,7 @@ using MediatR;
 
 namespace eventschool
 {
-    public class RegisterStudentHandler : IRequestHandler<RegisterStudent,Student>
+    public class RegisterStudentHandler : RequestHandler<RegisterStudent>
     {
         private readonly IMediator _mediator;   
         public IStudentRepository Repo { get; }
@@ -14,8 +14,9 @@ namespace eventschool
         }
 
 
-        public async Task<Student> Handle(RegisterStudent request, CancellationToken cancellationToken)
-        {            
+       
+        protected async override void Handle(RegisterStudent request)
+        {
             Student newStudent = new() 
             {
                 FirstName = request.FirstName,
@@ -30,8 +31,6 @@ namespace eventschool
                 StudentId = newStudent.StudentId.ToString(), 
                 Program = newStudent.Program,
                 Data = newStudent});
-            
-            return newStudent;
-        }
+                    }
     }
 }

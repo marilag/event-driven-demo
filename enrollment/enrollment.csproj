@@ -4,10 +4,21 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7e362b55-4bd1-444b-9a62-2b7ccca83659</UserSecretsId>
+
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="Azure.Messaging.EventGrid" Version="4.11.0" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.10.0" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\student\student.csproj" />
+    <ProjectReference Include="..\classes\classes.csproj" />
   </ItemGroup>
 
 </Project>
