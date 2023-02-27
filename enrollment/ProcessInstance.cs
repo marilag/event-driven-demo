@@ -5,20 +5,19 @@ namespace eventschool
 {
     public enum ProcessState { Started, Waiting, Completed, Failed  }
 
-    public class EnrollmentProcessInstance
+    public record EnrollmentProcessInstance
     {
 
         public Guid InstanceId { get; init; } = Guid.NewGuid();
 
-        public ProcessState CurrentState { get; set; }
+        public ProcessState CurrentState { get; init; } = ProcessState.Started;
 
-        public EnrollmentProcessInstance()
-        {
-        }
-        public (ProcessState, IEnumerable<IRequest>?) ChangeState( INotification newEvent) =>
+      
+        public  (ProcessState, IEnumerable<IRequest>?) ChangeState( INotification newEvent) =>
             (this.CurrentState, newEvent) switch
             {
                 (ProcessState.Started, StudentRegistered) => (ProcessState.Waiting, NextCommands(newEvent)),
+                
                 (ProcessState.Waiting, ClassEnroled) => (ProcessState.Completed, NextCommands(newEvent)),
                 
                 _ => throw new NotSupportedException()
