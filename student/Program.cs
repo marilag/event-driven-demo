@@ -44,7 +44,9 @@ builder.Services.AddQuartz(q =>
         .ForJob(jobKey)
         .WithIdentity("SendEventGridNotification-trigger")
          //This Cron interval can be described as "run every minute" (when second is zero)
-        .WithCronSchedule("0 * * ? * *")
+        //.WithCronSchedule("0 * * ? * *")
+        .WithCronSchedule("0/10 * * ? * * *")
+
     );
 });
 
