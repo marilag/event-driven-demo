@@ -2,7 +2,7 @@ using System.Transactions;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace  eventschool
+namespace  eventschool.enrollment
 {
     public class ProcessStateChangedHandler : AsyncRequestHandler<ProcessStateChanged>
 
@@ -30,13 +30,13 @@ namespace  eventschool
                     _eventstoreRepo.Append(notification); 
                     
 
-                    foreach (var request in notification.TriggerCommands)
+                    foreach (var n in notification.TriggerCommands)
                     {
-                        logger.LogInformation($"Get next request {request}");
+                        logger.LogInformation($"Get next request {n}");
 
                         var outboxNotification = new OutboxNotification();    
 
-                        outboxNotification.Data = JsonConvert.SerializeObject(request);
+                        outboxNotification.Data = JsonConvert.SerializeObject(n);
 
                         _outboxRepo.Insert(outboxNotification);
                         

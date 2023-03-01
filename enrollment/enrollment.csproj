@@ -13,12 +13,17 @@
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="Azure.Messaging.EventGrid" Version="4.11.0" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.10.0" />
-
+ <PackageReference Include="Quartz" Version="3.6.2" />
+    <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.6.2" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.6.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\student\student.csproj" />
     <ProjectReference Include="..\classes\classes.csproj" />
+    <ProjectReference Include="..\shared\outbox\outbox.csproj" />
+    <ProjectReference Include="..\shared\eventgrid\eventgrid.csproj" />
+
   </ItemGroup>
 
 </Project>

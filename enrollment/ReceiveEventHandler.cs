@@ -1,7 +1,7 @@
 using MediatR;
 using Newtonsoft.Json;
 
-namespace eventschool
+namespace eventschool.enrollment
 {
     public class ReceiveEventHandler : AsyncRequestHandler<ReceiveEvent>
     {
@@ -38,7 +38,7 @@ namespace eventschool
                 CurrentState = ProcessState.Started
              };
 
-             (ProcessState newState, IEnumerable<IRequest> newRequests) changedResult = newProcess.ChangeState(i);
+             (ProcessState newState, IEnumerable<INotification> newRequests) changedResult = newProcess.ChangeState(i);
 
              await mediator.Send(new ProcessStateChanged(
                 newProcess.InstanceId,

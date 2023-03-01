@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace eventschool
+namespace eventschool.enrollment
 {
     public class ProcessStateChanged : DomainEvent<EnrollmentProcessInstance>, IRequest
     {
@@ -11,9 +11,9 @@ namespace eventschool
         public ProcessState NewState { get; init;}
         public ProcessState OldState { get; init;}
         public INotification TriggeredByEvent { get; init; }
-        public IEnumerable<IRequest> TriggerCommands { get; init;}
+        public IEnumerable<INotification> TriggerCommands { get; init;}
         
-        public ProcessStateChanged(Guid instanceId, ProcessState newState, ProcessState oldState, INotification triggeredByEvent, IEnumerable<IRequest> triggerCommands)
+        public ProcessStateChanged(Guid instanceId, ProcessState newState, ProcessState oldState, INotification triggeredByEvent, IEnumerable<INotification> triggerCommands)
         {   
             EventType = nameof(ProcessStateChanged);
             SchemaVersion = _schemaVersion;

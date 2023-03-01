@@ -23,4 +23,9 @@
 
   </ItemGroup>
 
+<ItemGroup>
+      <ProjectReference Include="..\shared\outbox\outbox.csproj" />
+            <ProjectReference Include="..\shared\eventgrid\eventgrid.csproj" />
+
+  </ItemGroup>
 </Project>

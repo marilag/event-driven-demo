@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace eventschool
+namespace eventschool.enrollment
 
 {
     public enum ProcessState { Started, Waiting, Completed, Failed  }
@@ -13,7 +13,7 @@ namespace eventschool
         public ProcessState CurrentState { get; init; } = ProcessState.Started;
 
       
-        public  (ProcessState, IEnumerable<IRequest>?) ChangeState( INotification newEvent) =>
+        public  (ProcessState, IEnumerable<INotification>?) ChangeState( INotification newEvent) =>
             (this.CurrentState, newEvent) switch
             {
                 (ProcessState.Started, StudentRegistered) => (ProcessState.Waiting, NextCommands(newEvent)),
@@ -23,10 +23,10 @@ namespace eventschool
                 _ => throw new NotSupportedException()
             };
 
-        private static IEnumerable<IRequest>? NextCommands(INotification newEvent) =>
+        private static IEnumerable<INotification>? NextCommands(INotification newEvent) =>
             (newEvent) switch 
             {
-                (StudentRegistered) => new List<IRequest>() { new EnrolToClass() { StudentId = ((StudentRegistered)newEvent).StudentId }}, 
+                (StudentRegistered) => new List<INotification>() { new StudentRegisteredCompleted() { StudentId =  ((StudentRegistered)newEvent).StudentId}},                
                 (ClassEnroled) => null, 
                 _ => throw new NotSupportedException()
 
