@@ -8,6 +8,7 @@ namespace eventschool.enrollment
         public string StudentId { get; set; } = String.Empty;
         public StudentRegisteredCompleted()
         {
+          
             EventType = nameof(StudentRegisteredCompleted);
             SchemaVersion = _schemaVersion;
         }

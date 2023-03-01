@@ -19,6 +19,7 @@ namespace eventschool
         {
             Student newStudent = new() 
             {
+                StudentId = request.Id,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Address = request.Address,

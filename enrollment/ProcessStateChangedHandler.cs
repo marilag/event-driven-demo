@@ -30,7 +30,7 @@ namespace  eventschool.enrollment
                     _eventstoreRepo.Append(notification); 
                     
 
-                    foreach (var n in notification.TriggerCommands)
+                    foreach (var n in notification.TriggerNewEvents)
                     {
                         logger.LogInformation($"Get next request {n}");
 

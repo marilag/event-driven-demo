@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MediatR;
 
 namespace eventschool
@@ -12,6 +13,12 @@ namespace eventschool
         {
             EventType = nameof(StudentRegistered);
             SchemaVersion = _schemaVersion;
+        }
+
+        [JsonConstructor]
+        public StudentRegistered(Student data)
+        {
+            Data = data;
         }
     }
 }

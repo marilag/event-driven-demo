@@ -1,3 +1,4 @@
+using Azure.Messaging.EventGrid;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -20,13 +21,13 @@ namespace eventschool.enrollment
 
         protected override async Task Handle(ReceiveEvent request, CancellationToken cancellationToken)
         {
-             logger.LogInformation($"Handle receive event started {request.ReceivedEvent}");
+             logger.LogInformation($"Handle receive event started {request.EventData}");
 
-             var e = JsonConvert.DeserializeAnonymousType(request.ReceivedEvent, new {subject = ""});
+             var e = JsonConvert.DeserializeAnonymousType(request.EventData, new {subject = "", data = new object()});
              
              logger.LogInformation($"Retrieved event subject {e?.subject}");
 
-             var i = GetNotificationInstance(e?.subject,request);
+             var i = GetNotificationInstance(e?.subject,e?.data.ToString());
 
              logger.LogInformation($"Deserialized Event Instance {i}");             
 
@@ -38,21 +39,21 @@ namespace eventschool.enrollment
                 CurrentState = ProcessState.Started
              };
 
-             (ProcessState newState, IEnumerable<INotification> newRequests) changedResult = newProcess.ChangeState(i);
+             (ProcessState newState, IEnumerable<INotification> nextEvents) changedResult = newProcess.ChangeState(i);
 
              await mediator.Send(new ProcessStateChanged(
                 newProcess.InstanceId,
                 changedResult.newState,
                 ProcessState.Started,
                 i,
-                changedResult.newRequests));
+                changedResult.nextEvents));
             
         }
 
-        private INotification? GetNotificationInstance(string? subject, ReceiveEvent ReceivedEvent) =>
+        private INotification? GetNotificationInstance(string? subject, string eventData) =>
             (subject) switch 
             {
-                nameof(StudentRegistered) =>  JsonConvert.DeserializeObject<StudentRegistered>(ReceivedEvent.ReceivedEvent),
+                nameof(StudentRegistered) => JsonConvert.DeserializeObject<StudentRegistered>(eventData),
                 _ => throw new Exception()
             };
     }

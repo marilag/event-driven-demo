@@ -16,7 +16,8 @@ namespace  eventschool.enrollment
        
         public async Task Handle(OutboxNotification notification, CancellationToken cancellationToken)
         {
-            var eventData = JsonConvert.DeserializeObject<DomainEvent<EnrollmentProcessInstance>>(notification.Data);
+          
+            var eventData = JsonConvert.DeserializeObject<DomainEvent<Student>>(notification.Data);
             await _eventGridService.Publish(new List<EventGridEvent> {
                 new EventGridEvent(eventData.EventType,eventData.EventType,"1.0",eventData)                
             });       

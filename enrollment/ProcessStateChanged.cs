@@ -6,12 +6,11 @@ namespace eventschool.enrollment
     {
 
         private const string _schemaVersion = "1.0";
-
         public Guid InstanceId { get; init;}
         public ProcessState NewState { get; init;}
         public ProcessState OldState { get; init;}
         public INotification TriggeredByEvent { get; init; }
-        public IEnumerable<INotification> TriggerCommands { get; init;}
+        public IEnumerable<INotification> TriggerNewEvents { get; init;}
         
         public ProcessStateChanged(Guid instanceId, ProcessState newState, ProcessState oldState, INotification triggeredByEvent, IEnumerable<INotification> triggerCommands)
         {   
@@ -21,7 +20,7 @@ namespace eventschool.enrollment
             NewState = newState;
             OldState = oldState;
             TriggeredByEvent = triggeredByEvent;
-            TriggerCommands = triggerCommands;
+            TriggerNewEvents = triggerCommands;
         }
 
      
