@@ -1,2 +1,3 @@
 # Event Driven Architecture
-Event Driven architecture on Azure
+
+Demo application for implementing event driven architecture with Azure Service Bus and Event Grid
