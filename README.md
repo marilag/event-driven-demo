@@ -18,3 +18,5 @@ https://docs.xtdb.com/concepts/bitemporality/
 https://docs.xtdb.com/guides/confluent-cloud/
 
 https://www.kamilgrzybek.com/design/the-outbox-pattern/
+
+https://fr.slideshare.net/ThomasPierrain/as-time-goes-by-episode-2
