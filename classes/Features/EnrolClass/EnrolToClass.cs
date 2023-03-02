@@ -2,11 +2,11 @@ using MediatR;
 
 namespace eventschool
 {
-    public class EnrolToClass : IRequest
+    public record EnrolToClass : IRequest
 
     {
-        public string ProgramId { get; set; } = String.Empty;
-        public string StudentId { get; set; } = String.Empty; 
+        public string ProgramId { get; init; } = String.Empty;
+        public string StudentId { get; init; } = String.Empty; 
         
     }
 }
