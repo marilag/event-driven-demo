@@ -73,7 +73,7 @@ namespace eventschool.enrollment
             {
                 await _mediator.Send(
                 new ReceiveEvent {
-                        ReceivedEvent = notification
+                        EventData = notification
                     });
                 
             }

@@ -1,4 +1,4 @@
-namespace eventschool
+namespace eventschool.shared
 {
     public class EventGridOptions 
     {

@@ -1,3 +1,4 @@
+using Azure.Messaging.EventGrid;
 using Azure.Messaging.ServiceBus;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -67,14 +68,16 @@ namespace eventschool
         {
              _logger.LogInformation($"EVENT RECIEVED: {args.Message.Body.ToString()}");
         
-            var notification = JsonConvert.DeserializeObject<EventGridSchema<StudentRegisteredNotification>>(args.Message.Body.ToString());
+            var request = args.Message.Body.ToString();
+
+             var e = JsonConvert.DeserializeAnonymousType(request, new {subject = "", data = new object()});
+             
+            var eData = JsonConvert.DeserializeAnonymousType(e.data.ToString(), new {Data = new object()});
             
+            var eReg = JsonConvert.DeserializeObject<StudentRegisteredNotification>(eData.Data.ToString());
             try
             {
-                await _mediator.Publish(
-                new StudentRegisteredNotification {
-                    Program = notification.Data.Program,
-                    StudentId   = notification.Data.StudentId});
+                await _mediator.Publish(eReg);
                 
             }
             catch (System.Exception ex)

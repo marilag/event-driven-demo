@@ -6,6 +6,6 @@ namespace eventschool
 {
     public class ReceiveEvent : IRequest
     {
-        public string ReceivedEvent { get; init; } = default!;
+        public string EventData { get; init; } = default!;
     }
 }

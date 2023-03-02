@@ -4,6 +4,7 @@ using eventschool;
 using eventschool.enrollment;
 using MediatR;
 using Microsoft.Extensions.Azure;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,10 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddSingleton(typeof(IEventStoreRepository<>),typeof(EventStoreRepository<>));
 builder.Services.AddSingleton(typeof(IOutboxRepository),typeof(OutboxRepository));
 
+builder.Services.AddSingleton<IEventGridService, EventGridService>();
+
+builder.Services.Configure<EventGridOptions>(
+    builder.Configuration.GetSection(EventGridOptions.EventGrid));
     
 
 builder.Services.AddAzureClients(b => 
@@ -42,6 +47,32 @@ if (builder.Environment.IsProduction())
         new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
         new DefaultAzureCredential());
 }
+
+ 
+builder.Services.AddQuartz(q =>
+{
+    // Just use the name of your job that you created in the Jobs folder.
+    var jobKey = new JobKey("SendEventGridNotification");
+    q.AddJob<eventschool.enrollment.ProcessOutbox>(opts => opts.WithIdentity(jobKey));
+    
+    q.UseMicrosoftDependencyInjectionJobFactory();
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("SendEventGridNotification-trigger")
+         //This Cron interval can be described as "run every minute" (when second is zero)
+        //.WithCronSchedule("0 * * ? * *")
+        .WithCronSchedule("0/10 * * ? * * *")
+
+    );
+});
+
+// Quartz.Extensions.Hosting hosting
+builder.Services.AddQuartzHostedService(options =>
+{
+    // when shutting down we want jobs to complete gracefully
+    options.WaitForJobsToComplete = true;
+});    
 
 
 var app = builder.Build();

@@ -1,33 +1,36 @@
 using MediatR;
 
-namespace eventschool
+namespace eventschool.enrollment
 
 {
     public enum ProcessState { Started, Waiting, Completed, Failed  }
 
-    public class EnrollmentProcessInstance
+    public record EnrollmentProcessInstance
     {
 
         public Guid InstanceId { get; init; } = Guid.NewGuid();
 
-        public ProcessState CurrentState { get; set; }
+        public ProcessState CurrentState { get; init; } = ProcessState.Started;
 
-        public EnrollmentProcessInstance()
-        {
-        }
-        public (ProcessState, IEnumerable<IRequest>?) ChangeState( INotification newEvent) =>
+      
+        public  (ProcessState, IEnumerable<INotification>?) ChangeState( INotification newEvent) =>
             (this.CurrentState, newEvent) switch
             {
-                (ProcessState.Started, StudentRegistered) => (ProcessState.Waiting, NextCommands(newEvent)),
-                (ProcessState.Waiting, ClassEnroled) => (ProcessState.Completed, NextCommands(newEvent)),
+                (ProcessState.Started, StudentRegistered) => (ProcessState.Waiting, NextEvents(newEvent)),
+                
+                (ProcessState.Waiting, ClassEnroled) => (ProcessState.Completed, NextEvents(newEvent)),
                 
                 _ => throw new NotSupportedException()
             };
 
-        private static IEnumerable<IRequest>? NextCommands(INotification newEvent) =>
+        private static IEnumerable<INotification>? NextEvents(INotification newEvent) =>
             (newEvent) switch 
             {
-                (StudentRegistered) => new List<IRequest>() { new EnrolToClass() { StudentId = ((StudentRegistered)newEvent).StudentId }}, 
+                (StudentRegistered) => new List<INotification>() { new StudentRegisteredCompleted() { 
+                    StudentId =  ((StudentRegistered)newEvent).Data.StudentId.ToString(),
+                    Data = ((StudentRegistered)newEvent).Data
+                    }},                
+                
                 (ClassEnroled) => null, 
                 _ => throw new NotSupportedException()
 

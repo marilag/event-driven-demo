@@ -2,7 +2,7 @@ using Azure;
 using Azure.Messaging.EventGrid;
 using Microsoft.Extensions.Options;
 
-namespace eventschool
+namespace eventschool.shared
 {
     public interface IEventGridService
     {

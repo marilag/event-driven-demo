@@ -1,6 +1,8 @@
 using System.Reflection;
 using Azure.Identity;
 using eventschool;
+using eventschool;
+using eventschool.shared;
 using MediatR;
 using Quartz;
 
