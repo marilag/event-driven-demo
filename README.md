@@ -17,5 +17,4 @@ https://docs.xtdb.com/concepts/bitemporality/
 
 https://docs.xtdb.com/guides/confluent-cloud/
 
-https://www.kamilgrzybek.com/design/the-outbox-pattern/![image](https://user-images.githubusercontent.com/9032945/222309885-74f2fd60-bc8c-421c-9af3-4703815478f8.png)
-
+https://www.kamilgrzybek.com/design/the-outbox-pattern/
